@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.kwabenaberko.newsapilib.models.Article
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 
 @Composable
@@ -42,9 +44,11 @@ fun HomePage(newsViewmodel: NewsViewmodel,  navController: NavHostController){
         LazyColumn (
             modifier = Modifier.fillMaxSize()
         ) {
-            items(articles){
+            items(articles, key={it.url}){
                     article-> ArticleItem(article) {
-                    navController.navigate("articleScreen/${article.url}")
+                    navController.navigate("articleScreen/${URLEncoder.encode(article.url,
+                        StandardCharsets.UTF_8.toString()
+                    )}")
                     }
             }
         }
@@ -101,7 +105,8 @@ fun CategoriesBar(newsViewmodel: NewsViewmodel){
     )
 
     Row (
-        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+        modifier = Modifier.fillMaxWidth().padding(top = 35.dp).horizontalScroll(rememberScrollState()),
+
         verticalAlignment = Alignment.CenterVertically
     ) {
 
